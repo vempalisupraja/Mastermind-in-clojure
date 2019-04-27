@@ -1,0 +1,42 @@
+(ns clojure.core
+  (:require [clojure.string :as str])
+  (:require [clojure.set :as set])
+  (:gen-class))
+
+(def comp-fixed (rand-nth(str/split (slurp "test.txt") #"\n")))
+(def comp-guess (rand-nth(str/split (slurp "test.txt") #"\n")))
+(def sowpod (str/split (slurp "test.txt") #"\n"))
+
+(println "Computer is trying to guess your word::")
+(println comp-guess)
+(println "Is it matched??")
+(println "[yes/no]")
+
+(while (not= (read-line) "yes")
+
+  (println "Enter the no. of same characters:")
+  (def user-count (Integer/parseInt (read-line)))
+
+  (println "Enter your guess word")
+  (def user-guess (read-line))
+
+  (if (= (compare user-guess comp-fixed) 0)
+    (do
+    (println "You are mastermind")
+    (System/exit 0)))
+  (println "No. of characters matched with computer fixed word is::")
+  (println (count (clojure.set/intersection (set user-guess) (set comp-fixed))))
+
+  (defn commoncount? [x]
+    (= user-count (count (clojure.set/intersection (set x) (set comp-guess)))))
+
+
+  (def sowpod(filter commoncount? sowpod))
+  (def randompick (rand-nth sowpod))
+  (def comp-guess randompick)
+
+  (println "Computer Guess Word:" comp-guess)
+  (println "Is it matched?")
+  (println "[yes/no]"))
+(println "Computer Won")
+(println "Computer Fixed Word:" comp-fixed)
